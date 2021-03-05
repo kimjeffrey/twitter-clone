@@ -7,23 +7,31 @@ import Tweet from '../../../components/Tweet'
 export default function profile({id}) {
   const [session] = useSession();
 
+  function sortByNew(){
+    let sortedPosts = [...id.posts];
+    sortedPosts.sort((a, b) => {
+      return a.date > b.date ? -1 : 1;
+    })
+    return sortedPosts;
+  }
+
   return (
     <>
       <Meta title="Profile" />
       <div>
-        {id.id}'s Profile Page
+        {id.name}'s Profile Page
       </div>
-      {session.id === id.id &&
+      {session.id === id._id &&
         <Tweet />
       }
-      {id.posts.map((post, index) => (
-        <Post key={index} id={post.id} content={post.content} date={post.date.toString()} />
+      {id.posts && sortByNew().map((post, index) => (
+        <Post key={index} id={post._id} name={post.name} content={post.content} date={post.date.toString()} />
       ))}
     </>
   )
 }
 
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const res = await fetch(`${server}/api/user/${context.params.id}`);
   const id = await res.json();
 
@@ -31,17 +39,5 @@ export const getStaticProps = async (context) => {
     props: {
       id
     }
-  }
-}
-
-export const getStaticPaths = async () => {
-  const res = await fetch(`${server}/api/users`);
-  const users = await res.json();
-  const ids = users.map(user => user.id);
-  const paths = ids.map(id => ({params: {id}}));
-
-  return {
-    paths,
-    fallback: false
   }
 }

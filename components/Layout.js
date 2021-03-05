@@ -12,7 +12,7 @@ export default function Layout({children}) {
   }
 
   return (
-    <>
+    <div>
       <Meta />
       <div className={styles.container}>
         <LeftSideBar />
@@ -26,6 +26,6 @@ export default function Layout({children}) {
           }
         </div>
       </div>
-    </>
+    </div>
   )
 }

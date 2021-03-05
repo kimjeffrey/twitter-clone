@@ -5,7 +5,7 @@ export default function Post(props) {
     <div className="post-container">
       <div className="user-info">
         <i className="far fa-user"></i>
-        <h3><Link href="/profile/[id]" as={`/profile/${props.id}`}>{props.id}</Link></h3>
+        <h3><Link href="/profile/[id]" as={`/profile/${props.id}`}>{props.name}</Link></h3>
       </div>
       <p>{props.content}</p>
       <p className="time-and-date">{props.date}</p>

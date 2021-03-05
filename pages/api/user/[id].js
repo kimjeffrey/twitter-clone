@@ -1,11 +1,34 @@
-import {users} from '../../../data'
+import dbConnect from '../../../utils/dbConnect'
+import User from '../../../models/User'
 
-export default function handler(req, res) {
-  const filtered = users.filter(user => user.id === req.query.id);
+export default async function handler(req, res) {
+  await dbConnect;
 
-  if(filtered.length > 0) {
-    res.status(200).json(filtered[0]);
-  } else {
-    res.status(404).json({message: `User ${req.query.id} was not found.`})
+  const {query: {id}, body, method} = req;
+
+  const user = await User.findById(id);
+
+  if(method === 'GET') {
+    if(user) {
+      console.log(user);
+      res.status(200).json(user);
+    } else {
+      res.status(400).json({message: `User ${req.query.id} was not found.`})
+    }
+  } else if(method === 'POST') {
+    const newPost = {
+      _id: id,
+      name: user.name,
+      content: body,
+      date: new Date()
+    } 
+
+    await User.findByIdAndUpdate(id, {
+      posts: [...user.posts, newPost]
+    }, {
+      upsert: true
+    })
+
+    res.status(200).end();
   }
 }
