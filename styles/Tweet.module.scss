@@ -1,0 +1,29 @@
+@import "./variables";
+
+.form {
+  border: $border;
+  .textarea {
+    font-size: 20px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    resize: none;
+  }
+  .buttonHolder {
+    display: flex;
+    justify-content: flex-end;
+    .button {
+      padding: 12px;
+      margin: 10px;
+      border-radius: 35px;
+      border: none;
+      color:white;
+      background-color: $color-secondary;
+      font-weight: bold;
+      cursor: pointer;
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}

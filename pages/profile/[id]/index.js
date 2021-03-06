@@ -18,9 +18,6 @@ export default function profile({id}) {
   return (
     <>
       <Meta title="Profile" />
-      <div>
-        {id.name}'s Profile Page
-      </div>
       {session.id === id._id &&
         <Tweet />
       }

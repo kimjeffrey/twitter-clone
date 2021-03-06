@@ -1,14 +1,42 @@
 @import "./variables";
 
 .container {
+  padding-left: 10%;
+  padding-right: 10%;
   display: flex;
-  justify-content: space-around;
-  gap: 10px;
+  justify-content: center;
+  gap: 30px;
 }
 
 .content {
-  flex-basis: 80%;
   h1 {
-    color: $color-secondary;
+    margin: 0;
+    padding: 10px;
+    font-size: 24px;
+    border: $border;
+    width: 534px;
+  }
+  .message {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+    button {
+      padding: 10px;
+      border-radius: 35px;
+      border: 2px solid $color-secondary;
+      color: $color-secondary;
+      background: white;
+      font-weight: bold;
+      font-size: 24px;
+      cursor: pointer;
+      &:hover {
+        background: $color-secondary;
+        color: white;
+      }
+    }
   }
 }

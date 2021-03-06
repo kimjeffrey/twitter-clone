@@ -1,5 +1,6 @@
 import Layout from '../components/Layout'
 import {Provider} from 'next-auth/client'
+import '@fortawesome/fontawesome-svg-core/styles.css'
 import '../styles/globals.scss'
 
 function MyApp({ Component, pageProps }) {

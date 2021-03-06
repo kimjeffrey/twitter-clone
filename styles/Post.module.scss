@@ -1,0 +1,16 @@
+@import "./variables";
+
+.container {
+  padding: 10px;
+  border: $border; 
+  .user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .time {
+      color: grey;
+      font-size: .9rem;
+      margin-left: 5px;
+    }
+  }
+}

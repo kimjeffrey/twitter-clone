@@ -1,0 +1,35 @@
+@import "./variables";
+
+.navbar {
+  width: 200px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  .icon {
+    color: $color-secondary;
+    padding: 10px 15px;
+    font-size: 30px;
+  }
+  .navItem {
+    padding: 15px;
+    border-radius: 35px;
+    &:hover {
+      background-color: $color-secondary-light;
+      color: $color-secondary;
+    }
+    a {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 24px; 
+      &.selected {
+        color: $color-secondary;
+      }
+    }
+  }
+}

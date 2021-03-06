@@ -1,11 +1,17 @@
 import {server} from '../config'
 import {useSession} from 'next-auth/client'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import styles from '../styles/Tweet.module.scss'
 
 export default function Tweet() {
   const [session] = useSession();
 
   const [content, setContent] = useState("");
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    handleDisable();
+  }, [content])
 
   function handleChange(event) {
     setContent(event.target.value);
@@ -21,10 +27,20 @@ export default function Tweet() {
     setContent("");
   }
 
+  function handleDisable() {
+    if(content.length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <textarea name="content" value={content} onChange={handleChange} id="" cols="50" rows="6"></textarea><br/>
-      <button type="submit">Tweet</button>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <textarea name="content" className={styles.textarea} value={content} onChange={handleChange} placeholder="What's happening?" id="" cols="45" rows="2"></textarea><br/>
+      <div className={styles.buttonHolder}>
+        <button type="submit" disabled={disabled} className={styles.button}>Tweet</button>
+      </div>
     </form>
   )
 }
