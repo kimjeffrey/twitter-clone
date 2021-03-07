@@ -18,6 +18,7 @@ export default async function handler(req, res) {
   } else if(method === 'POST') {
     const newPost = {
       _id: id,
+      _postId: "post_" + Date.now(),
       name: user.name,
       content: body,
       date: new Date()
@@ -27,6 +28,14 @@ export default async function handler(req, res) {
       posts: [...user.posts, newPost]
     }, {
       upsert: true
+    })
+
+    res.status(200).end();
+  } else if(method === 'PUT') {
+    let newPosts = user.posts.filter(post => post._postId !== body);
+    console.log(newPosts);
+    await User.findByIdAndUpdate(id, {
+      posts: newPosts
     })
 
     res.status(200).end();

@@ -1,7 +1,15 @@
 import Link from 'next/link'
+import {server} from '../config'
+import {useRouter} from 'next/router';
+import {useSession} from 'next-auth/client'
+import {faHeart} from '@fortawesome/free-solid-svg-icons'
+import {faComment as farComment, faHeart as farHeart, faTrashAlt as farTrashAlt} from '@fortawesome/free-regular-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from '../styles/Post.module.scss'
 
 export default function Post(props) {
+  const router = useRouter();
+  const [session] = useSession();
 
   function getTime() {
     let currentTime = new Date();
@@ -31,6 +39,15 @@ export default function Post(props) {
     return date.toLocaleTimeString() + " • " + date.toLocaleDateString()
   }
 
+  async function handleDelete(event) {
+    event.preventDefault();
+    await fetch(`${server}/api/user/${session.id}`, {
+      method: "PUT",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(props.postId)
+    });
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -39,6 +56,19 @@ export default function Post(props) {
       </div>
       <p>{props.content}</p>
       <p className={styles.date}>{displayDate()}</p>
+      <div className={styles.icons}>
+        <a className={styles.icon} href="#">
+          <FontAwesomeIcon icon={farComment} />
+        </a>
+        <a className={styles.icon} href="#">
+          <FontAwesomeIcon icon={farHeart} />
+        </a>
+        {session.id === props.id &&
+          <a className={styles.icon} href="#" onClick={handleDelete}>
+          <FontAwesomeIcon icon={farTrashAlt} />
+          </a>
+        }
+      </div>
     </div>
   )
 }

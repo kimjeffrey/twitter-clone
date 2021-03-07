@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth'
+import dbConnect from '../../../utils/dbConnect'
 import { session } from 'next-auth/client'
 import Providers from 'next-auth/providers'
 

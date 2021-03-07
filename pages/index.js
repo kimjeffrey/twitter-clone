@@ -33,7 +33,7 @@ export default function Home({users}) {
         <Tweet />
       }
       {sortByNew().map((post, index) => (
-        <Post key={index} id={post._id} name={post.name} content={post.content} date={post.date.toString()} />
+        <Post key={index} id={post._id} postId={post._postId} name={post.name} content={post.content} date={post.date.toString()} />
       ))}
     </div>
   )
