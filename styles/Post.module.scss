@@ -3,15 +3,31 @@
 .container {
   padding: 10px;
   border: $border; 
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+  }
   .user {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    h3 {
+      position: relative;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
     .time {
       color: grey;
       font-size: .9rem;
       margin-left: 5px;
+      &:hover {
+        text-decoration: underline;
+      }
     }
+  }
+  .date {
+    margin-bottom: 10px;
   }
   .icons {
     display: flex;
@@ -19,6 +35,16 @@
     align-items: center;
     .icon {
       cursor: pointer;
+    }
+    .comment {
+      &:hover {
+        color: $color-secondary;
+      }
+    }
+    .heart, .trash {
+      &:hover {
+        color: $color-danger;
+      }
     }
   }
 }

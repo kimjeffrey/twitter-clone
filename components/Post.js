@@ -36,7 +36,17 @@ export default function Post(props) {
 
   function displayDate() {
     let date = new Date(props.date);
+
     return date.toLocaleTimeString() + " • " + date.toLocaleDateString()
+  }
+
+  function handleClick(event) {
+    if(!event.target.outerHTML.startsWith("<a")) {
+      router.push({
+        pathname: `/post/${props.postId}`,
+        query: {user: props.id}
+      }, `/post/${props.postId}`);
+    }
   }
 
   async function handleDelete(event) {
@@ -46,29 +56,33 @@ export default function Post(props) {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(props.postId)
     });
+    router.replace(router.asPath);
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleClick}>
       <div className={styles.user}>
-        <h3><Link href="/profile/[id]" as={`/profile/${props.id}`}>{props.name}</Link></h3>
+        <Link href="/profile/[id]" as={`/profile/${props.id}`}><h3>{props.name}</h3></Link>
         <div className={styles.time}>{getTime()}</div>
       </div>
       <p>{props.content}</p>
-      <p className={styles.date}>{displayDate()}</p>
+      <div className={styles.date}>{router.asPath.startsWith("/post") &&
+        displayDate()
+      }</div>
       <div className={styles.icons}>
-        <a className={styles.icon} href="#">
+        <a className={`${styles.icon} ${styles.comment}`} href="#">
           <FontAwesomeIcon icon={farComment} />
         </a>
-        <a className={styles.icon} href="#">
+        <a className={`${styles.icon} ${styles.heart}`} href="#">
           <FontAwesomeIcon icon={farHeart} />
         </a>
         {session.id === props.id &&
-          <a className={styles.icon} href="#" onClick={handleDelete}>
+          <a className={`${styles.icon} ${styles.trash}`} href="#" onClick={handleDelete}>
           <FontAwesomeIcon icon={farTrashAlt} />
           </a>
         }
       </div>
+      
     </div>
   )
 }

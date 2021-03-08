@@ -19,8 +19,9 @@ export default function Layout({children}) {
     } else if(router.pathname === "/profile/[id]") {
       const res = await fetch(`${server}/api/user/${router.query.id}`);
       const id = await res.json();
-
       setTitle(id.name);
+    } else if(router.pathname === "/post/[id]") {
+      setTitle("Tweet");
     }
   }, [children])
 

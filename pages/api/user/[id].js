@@ -10,7 +10,6 @@ export default async function handler(req, res) {
 
   if(method === 'GET') {
     if(user) {
-      console.log(user);
       res.status(200).json(user);
     } else {
       res.status(400).json({message: `User ${req.query.id} was not found.`})
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
   } else if(method === 'POST') {
     const newPost = {
       _id: id,
-      _postId: "post_" + Date.now(),
+      _postId: Date.now(),
       name: user.name,
       content: body,
       date: new Date()
@@ -33,7 +32,6 @@ export default async function handler(req, res) {
     res.status(200).end();
   } else if(method === 'PUT') {
     let newPosts = user.posts.filter(post => post._postId !== body);
-    console.log(newPosts);
     await User.findByIdAndUpdate(id, {
       posts: newPosts
     })

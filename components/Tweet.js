@@ -1,9 +1,11 @@
 import {server} from '../config'
+import {useRouter} from 'next/router'
 import {useSession} from 'next-auth/client'
 import {useEffect, useState} from 'react'
 import styles from '../styles/Tweet.module.scss'
 
 export default function Tweet() {
+  const router = useRouter();
   const [session] = useSession();
 
   const [content, setContent] = useState("");
@@ -25,6 +27,7 @@ export default function Tweet() {
       body: JSON.stringify(content)
     });
     setContent("");
+    router.replace(router.asPath);
   }
 
   function handleDisable() {
