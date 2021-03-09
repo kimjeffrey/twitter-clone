@@ -6,12 +6,16 @@ export default async function handler(req, res) {
 
   const {query: {id}, body, method} = req;
 
-  const user = await User.findById(id);
-
   if(method === 'GET') {
-    if(user) {
-      res.status(200).json(user);
-    } else {
+    try {
+      await User.findById(id).populate('posts').exec((err, user) => {
+        if(!err) {
+          res.status(200).json(user);
+        } else {
+          res.status(400).json({message: `Error retrieving user.`})
+        }
+      });
+    } catch(error) {
       res.status(400).json({message: `User ${req.query.id} was not found.`})
     }
   } else if(method === 'POST') {

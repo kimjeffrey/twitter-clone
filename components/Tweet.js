@@ -21,10 +21,10 @@ export default function Tweet() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    await fetch(`${server}/api/user/${session.id}`, {
+    await fetch(`${server}/api/post`, {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(content)
+      body: JSON.stringify({content, user: session.id})
     });
     setContent("");
     router.replace(router.asPath);

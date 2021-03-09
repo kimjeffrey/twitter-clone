@@ -5,19 +5,8 @@ import Post from '../components/Post'
 import Tweet from '../components/Tweet'
 import styles from '../styles/Home.module.scss'
 
-export default function Home({users}) {
+export default function Home({posts}) {
   const [session] = useSession();
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    users.forEach(user => {
-      setPosts(prevPosts => {
-        if(user.posts){
-          return [...prevPosts, ...user.posts];
-        }
-      })
-    })
-  }, [])
 
   function sortByNew(){
     let sortedPosts = [...posts];
@@ -33,19 +22,19 @@ export default function Home({users}) {
         <Tweet />
       }
       {sortByNew().map((post, index) => (
-        <Post key={index} id={post._id} postId={post._postId} name={post.name} content={post.content} date={post.date.toString()} />
+        <Post key={index} id={post._id} user={post.user._id} name={post.user.name} content={post.content} date={post.date.toString()} />
       ))}
     </div>
   )
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch(`${server}/api/users`);
-  const users = await res.json();
+  const res = await fetch(`${server}/api/posts`);
+  const posts = await res.json();
 
   return {
     props: {
-      users
+      posts
     }
   }
 }

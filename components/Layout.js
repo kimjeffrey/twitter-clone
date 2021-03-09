@@ -13,7 +13,6 @@ export default function Layout({children}) {
   const [title, setTitle] = useState("");
 
   useEffect(async () => {
-    console.log(router.pathname);
     if(router.pathname === "/") {
       setTitle("Home");
     } else if(router.pathname === "/profile/[id]") {

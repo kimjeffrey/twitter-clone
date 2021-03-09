@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import {server} from '../config'
+import {useState} from 'react'
 import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client'
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
@@ -10,6 +11,8 @@ import styles from '../styles/Post.module.scss'
 export default function Post(props) {
   const router = useRouter();
   const [session] = useSession();
+
+  const [liked, setLiked] = useState(false);
 
   function getTime() {
     let currentTime = new Date();
@@ -40,21 +43,22 @@ export default function Post(props) {
     return date.toLocaleTimeString() + " • " + date.toLocaleDateString()
   }
 
+  function handleLike() {
+    setLiked((prev) => {
+      return !prev;
+    })
+  }
+
   function handleClick(event) {
-    if(!event.target.outerHTML.startsWith("<a")) {
-      router.push({
-        pathname: `/post/${props.postId}`,
-        query: {user: props.id}
-      }, `/post/${props.postId}`);
+    if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
+      router.push(`/post/${props.id}`);
     }
   }
 
   async function handleDelete(event) {
     event.preventDefault();
-    await fetch(`${server}/api/user/${session.id}`, {
-      method: "PUT",
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(props.postId)
+    await fetch(`${server}/api/post/${props.id}`, {
+      method: "DELETE",
     });
     router.replace(router.asPath);
   }
@@ -73,10 +77,11 @@ export default function Post(props) {
         <a className={`${styles.icon} ${styles.comment}`} href="#">
           <FontAwesomeIcon icon={farComment} />
         </a>
-        <a className={`${styles.icon} ${styles.heart}`} href="#">
-          <FontAwesomeIcon icon={farHeart} />
+        <a className={!liked ? `${styles.icon} ${styles.heart}` : `${styles.icon} ${styles.heartFilled}`} href="#" onClick={handleLike}>
+          {!liked && <FontAwesomeIcon icon={farHeart} /> }
+          {liked && <FontAwesomeIcon icon={faHeart} /> }
         </a>
-        {session.id === props.id &&
+        {session.id === props.user &&
           <a className={`${styles.icon} ${styles.trash}`} href="#" onClick={handleDelete}>
           <FontAwesomeIcon icon={farTrashAlt} />
           </a>
