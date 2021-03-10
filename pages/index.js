@@ -28,7 +28,7 @@ export default function Home({posts}) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const res = await fetch(`${server}/api/posts`);
   const posts = await res.json();
 
