@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import {server} from '../config'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client'
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
@@ -13,6 +13,19 @@ export default function Post(props) {
   const [session] = useSession();
 
   const [liked, setLiked] = useState(false);
+
+  useEffect(async () => {
+    getUserLikes();
+  }, [])
+
+  async function getUserLikes() {
+    const res = await fetch(`${server}/api/likes/${session.id}`);
+    const userLikes = await res.json();
+
+    if(userLikes.includes(props.id)) {
+      setLiked(true);
+    }
+  }
 
   function getTime() {
     let currentTime = new Date();
@@ -43,10 +56,24 @@ export default function Post(props) {
     return date.toLocaleTimeString() + " • " + date.toLocaleDateString()
   }
 
-  function handleLike() {
+  async function handleLike() {
+    if(liked === false) {
+      await fetch(`${server}/api/likes/${props.id}`, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: session.id})
+      })
+    } else {
+      await fetch(`${server}/api/likes/${props.id}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: session.id})
+      })
+    }
     setLiked((prev) => {
       return !prev;
-    })
+    });
+    
   }
 
   function handleClick(event) {
@@ -77,10 +104,15 @@ export default function Post(props) {
         <a className={`${styles.icon} ${styles.comment}`} href="#">
           <FontAwesomeIcon icon={farComment} />
         </a>
-        <a className={!liked ? `${styles.icon} ${styles.heart}` : `${styles.icon} ${styles.heartFilled}`} href="#" onClick={handleLike}>
-          {!liked && <FontAwesomeIcon icon={farHeart} /> }
-          {liked && <FontAwesomeIcon icon={faHeart} /> }
-        </a>
+        <div className={styles.likeContainer}>
+          <a className={!liked ? `${styles.icon} ${styles.heart}` : `${styles.icon} ${styles.heartFilled}`} href="#" onClick={handleLike}>
+            {!liked && <FontAwesomeIcon icon={farHeart} /> }
+            {liked && <FontAwesomeIcon icon={faHeart} /> }
+          </a>
+          <div className={styles.likes}>
+            {props.likes > 0 && props.likes}
+          </div>
+        </div>
         {session.id === props.user &&
           <a className={`${styles.icon} ${styles.trash}`} href="#" onClick={handleDelete}>
           <FontAwesomeIcon icon={farTrashAlt} />

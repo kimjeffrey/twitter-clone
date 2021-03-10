@@ -21,8 +21,8 @@ export default function Home({posts}) {
       {session &&
         <Tweet />
       }
-      {sortByNew().map((post, index) => (
-        <Post key={index} id={post._id} user={post.user._id} name={post.user.name} content={post.content} date={post.date.toString()} />
+      {sortByNew().map((post) => (
+        <Post key={post._id} id={post._id} user={post.user._id} name={post.user.name} content={post.content} date={post.date.toString()} likes={post.likes} />
       ))}
     </div>
   )

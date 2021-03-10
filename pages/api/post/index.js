@@ -11,7 +11,8 @@ export default async function handler(req, res) {
     const newPost = new Post({
       user: body.user,
       content: body.content,
-      date: new Date()
+      date: new Date(),
+      likes: 0,
     })
 
     newPost.save((err) => {
