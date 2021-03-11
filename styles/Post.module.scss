@@ -3,9 +3,17 @@
 .container {
   padding: 10px;
   border: $border; 
-  cursor: pointer;
-  &:hover {
-    background-color: rgba(128, 128, 128, 0.1);
+  &.hover {
+    cursor: pointer;
+    &:hover{
+      background-color: rgba(128, 128, 128, 0.1);
+    }
+  }
+  hr {
+    border: none;
+    height: 1px;
+    color: $color-hr;
+    background-color: $color-hr;
   }
   .user {
     display: flex;
@@ -13,6 +21,7 @@
     align-items: center;
     h3 {
       position: relative;
+      cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
@@ -28,11 +37,21 @@
   }
   .date {
     margin-bottom: 10px;
+    color: grey;
+    font-size: .9rem;
+  }
+  .likes {
+    color: grey;
+    font-size: .8em;
+    b {
+      color: black;
+    }
   }
   .icons {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    text-align: center;
     .likeContainer {
       display: flex;
       gap : 5px;
@@ -41,21 +60,35 @@
     .icon {
       cursor: pointer;
     }
-    .likes {
-      font-size: .8em;
-    }
     .comment {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
       &:hover {
         color: $color-secondary;
+        background-color: $color-secondary-light;
+        
       }
     }
     .heart, .trash {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
       &:hover {
         color: $color-danger;
+        background-color: $color-danger-light;
       }
     }
     .heartFilled {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
       color: red;
+      &:hover {
+        color: $color-danger;
+        background-color: $color-danger-light;
+      }
     }
+    
   }
 }

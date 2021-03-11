@@ -100,7 +100,7 @@ export default function Post(props) {
   }
 
   return (
-    <div className={styles.container} onClick={handleClick}>
+    <div className={!router.asPath.startsWith("/post") ? `${styles.container} ${styles.hover}` : `${styles.container}`} onClick={!router.asPath.startsWith("/post") ? handleClick : undefined}>
       <div className={styles.user}>
         <Link href="/profile/[id]" as={`/profile/${props.user}`}><h3>{props.name}</h3></Link>
         <div className={styles.time}>{getTime()}</div>
@@ -109,6 +109,11 @@ export default function Post(props) {
       <div className={styles.date}>{router.asPath.startsWith("/post") &&
         displayDate()
       }</div>
+      {router.asPath.startsWith("/post") && <>
+        <hr/>
+        <div className={styles.likes}><b>{numberOfLikes}</b> {numberOfLikes > 1 ? "Likes" : "Like"}</div>
+        <hr/>
+      </>}
       <div className={styles.icons}>
         <a className={`${styles.icon} ${styles.comment}`} href="#">
           <FontAwesomeIcon icon={farComment} />
@@ -119,7 +124,7 @@ export default function Post(props) {
             {liked && <FontAwesomeIcon icon={faHeart} /> }
           </a>
           <div className={styles.likes}>
-            {numberOfLikes > 0 && numberOfLikes}
+            {numberOfLikes > 0 && !router.asPath.startsWith("/post") && numberOfLikes}
           </div>
         </div>
         {session.id === props.user &&
