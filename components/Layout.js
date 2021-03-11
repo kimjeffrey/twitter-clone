@@ -7,7 +7,7 @@ import Meta from './Meta'
 import styles from '../styles/Layout.module.scss'
 
 export default function Layout({children}) {
-  const clientPath = dev ? 'http://localhost:3000' : `https://https://twitter-clone-site.vercel.app`;
+  const clientPath = dev ? 'http://localhost:3000' : `https://twitter-clone-site.vercel.app`;
   const router = useRouter();
   const [session, loading] = useSession();
 
