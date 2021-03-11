@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from '../styles/Post.module.scss'
 
 export default function Post(props) {
-  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  const clientPath = dev ? 'http://localhost:3000' : `https://https://twitter-clone-site.vercel.app`;
   const router = useRouter();
   const [session] = useSession();
 
