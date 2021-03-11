@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import {dev, server} from '../config'
+import {dev} from '../config'
 import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client'
@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from '../styles/Post.module.scss'
 
 export default function Post(props) {
-  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
+  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   const router = useRouter();
   const [session] = useSession();
 

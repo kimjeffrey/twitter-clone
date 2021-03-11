@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {signIn, useSession} from 'next-auth/client'
-import {dev, server} from '../config'
+import {dev} from '../config'
 import LeftSideBar from './LeftSideBar'
 import Meta from './Meta'
 import styles from '../styles/Layout.module.scss'
 
 export default function Layout({children}) {
-  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
+  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   const router = useRouter();
   const [session, loading] = useSession();
 
