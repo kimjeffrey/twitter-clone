@@ -1,10 +1,11 @@
-import {server} from '../config'
+import {dev, server} from '../config'
 import {useRouter} from 'next/router'
 import {useSession} from 'next-auth/client'
 import {useEffect, useState} from 'react'
 import styles from '../styles/Tweet.module.scss'
 
 export default function Tweet() {
+  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
   const router = useRouter();
   const [session] = useSession();
 
@@ -21,7 +22,7 @@ export default function Tweet() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    await fetch(`${server}/api/post`, {
+    await fetch(`${clientPath}/api/post`, {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({content, user: session.id})

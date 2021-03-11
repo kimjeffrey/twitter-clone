@@ -1,12 +1,13 @@
 import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 import {signIn, useSession} from 'next-auth/client'
-import {server} from '../config'
+import {dev, server} from '../config'
 import LeftSideBar from './LeftSideBar'
 import Meta from './Meta'
 import styles from '../styles/Layout.module.scss'
 
 export default function Layout({children}) {
+  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
   const router = useRouter();
   const [session, loading] = useSession();
 
@@ -16,7 +17,7 @@ export default function Layout({children}) {
     if(router.pathname === "/") {
       setTitle("Home");
     } else if(router.pathname === "/profile/[id]") {
-      const res = await fetch(`${server}/api/user/${router.query.id}`);
+      const res = await fetch(`${clientPath}/api/user/${router.query.id}`);
       const id = await res.json();
       setTitle(id.name);
     } else if(router.pathname === "/post/[id]") {

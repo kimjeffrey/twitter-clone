@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import {server} from '../config'
+import {dev, server} from '../config'
 import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client'
@@ -9,6 +9,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from '../styles/Post.module.scss'
 
 export default function Post(props) {
+  const clientPath = dev ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
   const router = useRouter();
   const [session] = useSession();
 
@@ -19,7 +20,7 @@ export default function Post(props) {
   }, [])
 
   async function getUserLikes() {
-    const res = await fetch(`${server}/api/likes/${session.id}`);
+    const res = await fetch(`${clientPath}/api/likes/${session.id}`);
     const userLikes = await res.json();
 
     if(userLikes.includes(props.id)) {
@@ -58,13 +59,13 @@ export default function Post(props) {
 
   async function handleLike() {
     if(liked === false) {
-      await fetch(`${server}/api/likes/${props.id}`, {
+      await fetch(`${clientPath}/api/likes/${props.id}`, {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
       })
     } else {
-      await fetch(`${server}/api/likes/${props.id}`, {
+      await fetch(`${clientPath}/api/likes/${props.id}`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
@@ -77,14 +78,15 @@ export default function Post(props) {
   }
 
   function handleClick(event) {
-    if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
+    console.log(event.target.outerHTML);
+    if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<h3") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
       router.push(`/post/${props.id}`);
     }
   }
 
   async function handleDelete(event) {
     event.preventDefault();
-    await fetch(`${server}/api/post/${props.id}`, {
+    await fetch(`${clientPath}/api/post/${props.id}`, {
       method: "DELETE",
     });
     router.replace(router.asPath);
