@@ -22,7 +22,7 @@ export default function profile({user}) {
         <Tweet />
       }
       {user.posts && sortByNew().map((post, index) => (
-        <Post key={index} id={user._id} postId={post._id} name={user.name} content={post.content} date={post.date.toString()} />
+        <Post key={index} id={post._id} user={user._id} name={user.name} content={post.content} date={post.date.toString()} likes={post.likes} />
       ))}
     </>
   )

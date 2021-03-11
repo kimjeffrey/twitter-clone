@@ -14,6 +14,7 @@ export default function Post(props) {
   const [session] = useSession();
 
   const [liked, setLiked] = useState(false);
+  const [numberOfLikes, setNumberOfLikes] = useState(props.likes);
 
   useEffect(async () => {
     getUserLikes();
@@ -64,11 +65,17 @@ export default function Post(props) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
       })
+      setNumberOfLikes((prev) => {
+        return prev + 1;
+      })
     } else {
       await fetch(`${clientPath}/api/likes/${props.id}`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
+      })
+      setNumberOfLikes((prev) => {
+        return prev - 1;
       })
     }
     setLiked((prev) => {
@@ -95,7 +102,7 @@ export default function Post(props) {
   return (
     <div className={styles.container} onClick={handleClick}>
       <div className={styles.user}>
-        <Link href="/profile/[id]" as={`/profile/${props.id}`}><h3>{props.name}</h3></Link>
+        <Link href="/profile/[id]" as={`/profile/${props.user}`}><h3>{props.name}</h3></Link>
         <div className={styles.time}>{getTime()}</div>
       </div>
       <p>{props.content}</p>
@@ -112,7 +119,7 @@ export default function Post(props) {
             {liked && <FontAwesomeIcon icon={faHeart} /> }
           </a>
           <div className={styles.likes}>
-            {props.likes > 0 && props.likes}
+            {numberOfLikes > 0 && numberOfLikes}
           </div>
         </div>
         {session.id === props.user &&
