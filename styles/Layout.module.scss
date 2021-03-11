@@ -9,12 +9,22 @@
 }
 
 .content {
-  h1 {
-    margin: 0;
-    padding: 10px;
-    font-size: 24px;
+  .titleContainer {
     border: $border;
     width: 534px;
+    padding: 10px;
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .profileInfo {
+      font-size: .9rem;
+      color: grey;
+      .icon {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
   }
   .message {
     text-align: center;

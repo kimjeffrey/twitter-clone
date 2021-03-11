@@ -55,7 +55,7 @@ export default function Post(props) {
   function displayDate() {
     let date = new Date(props.date);
 
-    return date.toLocaleTimeString() + " • " + date.toLocaleDateString()
+    return date.toLocaleTimeString() + " · " + date.toLocaleDateString()
   }
 
   async function handleLike() {
@@ -111,7 +111,7 @@ export default function Post(props) {
       }</div>
       {router.asPath.startsWith("/post") && <>
         <hr/>
-        <div className={styles.likes}><b>{numberOfLikes}</b> {numberOfLikes > 1 ? "Likes" : "Like"}</div>
+        <div className={styles.likes}><b>{numberOfLikes}</b> {numberOfLikes === 1 ? "Like" : "Likes"}</div>
         <hr/>
       </>}
       <div className={styles.icons}>
