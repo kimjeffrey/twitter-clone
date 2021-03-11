@@ -37,7 +37,7 @@ export default function Layout({children}) {
         <LeftSideBar />
         <div className={styles.content}>
           <h1>{title}</h1>
-          {!session && 
+          {!loading && !session && 
           <div className={styles.message}>
             Sign in to view posts.
             <button onClick={handleSignIn}>Sign in</button>
