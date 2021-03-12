@@ -6,7 +6,9 @@ import {useSession} from 'next-auth/client'
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
 import {faComment as farComment, faHeart as farHeart, faTrashAlt as farTrashAlt} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import Reply from './Reply'
 import styles from '../styles/Post.module.scss'
+import { set } from 'mongoose';
 
 export default function Post(props) {
   const clientPath = dev ? 'http://localhost:3000' : `https://twitter-clone-site.vercel.app`;
@@ -15,6 +17,7 @@ export default function Post(props) {
 
   const [liked, setLiked] = useState(false);
   const [numberOfLikes, setNumberOfLikes] = useState(props.likes);
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
   useEffect(async () => {
     getUserLikes();
@@ -85,9 +88,22 @@ export default function Post(props) {
   }
 
   function handleClick(event) {
-    console.log(event.target.outerHTML);
     if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<h3") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
       router.push(`/post/${props.id}`);
+    }
+  }
+
+  function handleComment() {
+    setShowReplyForm(prev => {
+      return !prev;
+    })
+  }
+
+  function handleFocus(event) {
+    if(event.target.outerHTML.startsWith("<div class=\"Post_replyContainer")) {
+      setShowReplyForm(prev => {
+        return !prev;
+      })
     }
   }
 
@@ -99,7 +115,8 @@ export default function Post(props) {
     router.replace(router.asPath);
   }
 
-  return (
+  return ( 
+    <>
     <div className={!router.asPath.startsWith("/post") ? `${styles.container} ${styles.hover}` : `${styles.container}`} onClick={!router.asPath.startsWith("/post") ? handleClick : undefined}>
       <div className={styles.user}>
         <Link href="/profile/[id]" as={`/profile/${props.user}`}><h3>{props.name}</h3></Link>
@@ -115,7 +132,7 @@ export default function Post(props) {
         <hr/>
       </>}
       <div className={styles.icons}>
-        <a className={`${styles.icon} ${styles.comment}`} href="#">
+        <a className={`${styles.icon} ${styles.comment}`} href="#" onClick={handleComment}>
           <FontAwesomeIcon icon={farComment} />
         </a>
         <div className={styles.likeContainer}>
@@ -133,7 +150,14 @@ export default function Post(props) {
           </a>
         }
       </div>
-      
     </div>
+    {showReplyForm && 
+      <div className={styles.replyContainer} onClick={handleFocus}>
+        <div className={styles.reply}>
+          <Reply id={props.id} user={props.user} name={props.name} content={props.content} date={props.date.toString()} />
+        </div>
+      </div>
+    }
+    </>
   )
 }

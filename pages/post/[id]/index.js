@@ -1,11 +1,15 @@
 import {server} from '../../../config'
+import Meta from '../../../components/Meta'
 import Post from '../../../components/Post'
 
 export default function index({post}) {
   return (
+    <>
+    <Meta title="Post" />
     <div>
       <Post id={post._id} user={post.user._id} name={post.user.name} content={post.content} date={post.date} likes={post.likes} />
     </div>
+    </>
   )
 }
 
