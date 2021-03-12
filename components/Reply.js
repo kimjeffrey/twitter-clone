@@ -1,41 +1,34 @@
+import Link from 'next/link'
+import {dev} from '../config'
 import {useEffect, useState} from 'react'
 import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client'
-import {dev} from '../config'
+import {faHeart} from '@fortawesome/free-solid-svg-icons'
+import {faHeart as farHeart, faTrashAlt as farTrashAlt} from '@fortawesome/free-regular-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import ReplyForm from './ReplyForm'
 import styles from '../styles/Reply.module.scss'
 
 export default function Reply(props) {
   const clientPath = dev ? 'http://localhost:3000' : `https://twitter-clone-site.vercel.app`;
   const router = useRouter();
-  const [session] = useSession(); 
+  const [session] = useSession();
 
-  const [content, setContent] = useState("");
-  const [disabled, setDisabled] = useState(true);
+  const [liked, setLiked] = useState(false);
+  const [numberOfLikes, setNumberOfLikes] = useState(props.likes);
+  const [numberOfReplies, setNumberOfReplies] = useState(props.replies);
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
-  useEffect(() => {
-    handleDisable();
-  }, [content])
+  useEffect(async () => {
+    getUserLikes();
+  }, [])
 
-  function handleChange(event) {
-    setContent(event.target.value);
-  }
+  async function getUserLikes() {
+    const res = await fetch(`${clientPath}/api/likes/${session.id}`);
+    const userLikes = await res.json();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    await fetch(`${clientPath}/api/reply`, {
-      method: "POST",
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({content, user: session.id, post: props.id})
-    });
-    setContent("");
-    router.replace(router.asPath);
-  }
-
-  function handleDisable() {
-    if(content.length > 0) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
+    if(userLikes.includes(props.id)) {
+      setLiked(true);
     }
   }
 
@@ -62,27 +55,98 @@ export default function Reply(props) {
     return Math.floor(finalValue) + unitOfTime;
   }
 
-  return (
-  <>
-    <div className={styles.container}>
-      <div className={styles.userPost}>
-        <div className={styles.user}>
-          <h3>{props.name}</h3>
-          <div className={styles.time}>{getTime()}</div>
-        </div>
-        <p>{props.content}</p>
-      </div>
-      <div className={styles.replyingTo}>
-        Replying to {props.name}
-      </div>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <textarea name="content" className={styles.textarea} value={content} onChange={handleChange} placeholder="Tweet your reply" id="" cols="45" rows="2"></textarea><br/>
-        <div className={styles.buttonHolder}>
-          <button type="submit" disabled={disabled} className={styles.button}>Reply</button>
-        </div>
-      </form>
-    </div>
+  function displayDate() {
+    let date = new Date(props.date);
+
+    return date.toLocaleTimeString() + " · " + date.toLocaleDateString()
+  }
+
+  async function handleLike() {
+    if(liked === false) {
+      await fetch(`${clientPath}/api/likes/${props.id}`, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: session.id})
+      })
+      setNumberOfLikes((prev) => {
+        return prev + 1;
+      })
+    } else {
+      await fetch(`${clientPath}/api/likes/${props.id}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: session.id})
+      })
+      setNumberOfLikes((prev) => {
+        return prev - 1;
+      })
+    }
+    setLiked((prev) => {
+      return !prev;
+    });
     
-  </>
+  }
+
+  function handleClick(event) {
+    if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<h3") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
+      router.push(`/post/${props.id}`);
+    }
+  }
+
+  function handleComment() {
+    setShowReplyForm(prev => {
+      return !prev;
+    })
+  }
+
+  function handleFocus(event) {
+    if(event.target.outerHTML.startsWith("<div class=\"Post_replyContainer")) {
+      setShowReplyForm(prev => {
+        return !prev;
+      })
+    }
+  }
+
+  async function handleDelete(event) {
+    event.preventDefault();
+    await fetch(`${clientPath}/api/post/${props.id}`, {
+      method: "DELETE",
+    });
+    router.replace(router.asPath);
+  }
+
+  return ( 
+    <>
+    <div className={!router.asPath.startsWith("/post") ? `${styles.container} ${styles.hover}` : `${styles.container}`} onClick={!router.asPath.startsWith("/post") ? handleClick : undefined}>
+      <div className={styles.user}>
+        <Link href="/profile/[id]" as={`/profile/${props.user}`}><h3>{props.name}</h3></Link>
+        <div className={styles.time}>{getTime()}</div>
+      </div>
+      <p>{props.content}</p>
+      <div className={styles.icons}>
+        <div className={styles.likeContainer}>
+          <a className={!liked ? `${styles.icon} ${styles.heart}` : `${styles.icon} ${styles.heartFilled}`} href="#" onClick={handleLike}>
+            {!liked && <FontAwesomeIcon icon={farHeart} /> }
+            {liked && <FontAwesomeIcon icon={faHeart} /> }
+          </a>
+          <div className={styles.likes}>
+            {numberOfLikes > 0 && numberOfLikes}
+          </div>
+        </div>
+        {session.id === props.user &&
+          <a className={`${styles.icon} ${styles.trash}`} href="#" onClick={handleDelete}>
+          <FontAwesomeIcon icon={farTrashAlt} />
+          </a>
+        }
+      </div>
+    </div>
+    {showReplyForm && 
+      <div className={styles.replyContainer} onClick={handleFocus}>
+        <div className={styles.reply}>
+          <ReplyForm id={props.id} user={props.user} name={props.name} content={props.content} date={props.date.toString()} />
+        </div>
+      </div>
+    }
+    </>
   )
 }

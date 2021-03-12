@@ -1,64 +1,122 @@
 @import "./variables";
 
 .container {
-  position: relative;
-  z-index: 10;
+  padding: 10px;
+  border: $border; 
   &.hover {
     cursor: pointer;
     &:hover{
       background-color: rgba(128, 128, 128, 0.1);
     }
   }
-  .userPost {
-    padding: 10px;
-    border-bottom: $border; 
-    .user {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      h3 {
-        position: relative;
+  hr {
+    border: none;
+    height: 1px;
+    color: $color-hr;
+    background-color: $color-hr;
+  }
+  .user {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    h3 {
+      position: relative;
+      cursor: pointer;
+      z-index: 0;
+      &:hover {
+        text-decoration: underline;
       }
-      .time {
-        color: grey;
-        font-size: .9rem;
-        margin-left: 5px;
-        &:hover {
-          text-decoration: underline;
-        }
+    }
+    .time {
+      color: grey;
+      font-size: .9rem;
+      margin-left: 5px;
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
-  .replyingTo {
-    padding: 10px;
-    font-size: .8em;
+  .date {
+    margin-bottom: 10px;
     color: grey;
+    font-size: .9rem;
   }
-  .form {
-    border-top: $border;
-    .textarea {
-      font-size: 20px;
-      border: none;
-      outline: none;
-      padding: 10px;
-      resize: none;
+  .likes {
+    color: grey;
+    font-size: .8em;
+    b {
+      color: black;
     }
-    .buttonHolder {
+  }
+  .icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    .likeContainer {
       display: flex;
-      justify-content: flex-end;
-      .button {
-        padding: 12px;
-        margin: 10px;
-        border-radius: 35px;
-        border: none;
-        color:white;
-        background-color: $color-secondary;
-        font-weight: bold;
-        cursor: pointer;
-        &:disabled {
-          cursor: not-allowed;
-        }
+      gap : 5px;
+      align-items: center;
+    }
+    .commentContainer {
+      display: flex;
+      gap : 5px;
+      align-items: center;
+      .commentCount {
+        color: grey;
+        font-size: .8em;
       }
     }
+    .icon {
+      cursor: pointer;
+    }
+    .comment {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      &:hover {
+        color: $color-secondary;
+        background-color: $color-secondary-light;
+        
+      }
+    }
+    .heart, .trash {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      &:hover {
+        color: $color-danger;
+        background-color: $color-danger-light;
+      }
+    }
+    .heartFilled {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      color: red;
+      &:hover {
+        color: $color-danger;
+        background-color: $color-danger-light;
+      }
+    }
+    
+  }
+}
+.replyContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  .reply {
+    position: absolute;
+    width: 534px;
+    top: 186px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 25px;
+    background-color: white;
   }
 }

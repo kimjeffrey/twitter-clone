@@ -6,7 +6,7 @@ import {useSession} from 'next-auth/client'
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
 import {faComment as farComment, faHeart as farHeart, faTrashAlt as farTrashAlt} from '@fortawesome/free-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import Reply from './Reply'
+import ReplyForm from './ReplyForm'
 import styles from '../styles/Post.module.scss'
 import { set } from 'mongoose';
 
@@ -160,7 +160,7 @@ export default function Post(props) {
     {showReplyForm && 
       <div className={styles.replyContainer} onClick={handleFocus}>
         <div className={styles.reply}>
-          <Reply id={props.id} user={props.user} name={props.name} content={props.content} date={props.date.toString()} />
+          <ReplyForm id={props.id} user={props.user} name={props.name} content={props.content} date={props.date.toString()} />
         </div>
       </div>
     }

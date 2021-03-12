@@ -1,0 +1,64 @@
+@import "./variables";
+
+.container {
+  position: relative;
+  z-index: 10;
+  &.hover {
+    cursor: pointer;
+    &:hover{
+      background-color: rgba(128, 128, 128, 0.1);
+    }
+  }
+  .userPost {
+    padding: 10px;
+    border-bottom: $border; 
+    .user {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      h3 {
+        position: relative;
+      }
+      .time {
+        color: grey;
+        font-size: .9rem;
+        margin-left: 5px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .replyingTo {
+    padding: 10px;
+    font-size: .8em;
+    color: grey;
+  }
+  .form {
+    border-top: $border;
+    .textarea {
+      font-size: 20px;
+      border: none;
+      outline: none;
+      padding: 10px;
+      resize: none;
+    }
+    .buttonHolder {
+      display: flex;
+      justify-content: flex-end;
+      .button {
+        padding: 12px;
+        margin: 10px;
+        border-radius: 35px;
+        border: none;
+        color:white;
+        background-color: $color-secondary;
+        font-weight: bold;
+        cursor: pointer;
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
