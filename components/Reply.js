@@ -109,7 +109,7 @@ export default function Reply(props) {
 
   async function handleDelete(event) {
     event.preventDefault();
-    await fetch(`${clientPath}/api/post/${props.id}`, {
+    await fetch(`${clientPath}/api/reply/${props.id}`, {
       method: "DELETE",
     });
     router.replace(router.asPath);
