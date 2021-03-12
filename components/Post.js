@@ -28,7 +28,7 @@ export default function Post(props) {
     const res = await fetch(`${clientPath}/api/likes/${session.id}`);
     const userLikes = await res.json();
 
-    if(userLikes.includes(props.id)) {
+    if(!userLikes.message && userLikes.includes(props.id)) {
       setLiked(true);
     }
   }

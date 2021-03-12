@@ -16,7 +16,6 @@ export default function Reply(props) {
 
   const [liked, setLiked] = useState(false);
   const [numberOfLikes, setNumberOfLikes] = useState(props.likes);
-  const [numberOfReplies, setNumberOfReplies] = useState(props.replies);
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   useEffect(async () => {
@@ -24,10 +23,10 @@ export default function Reply(props) {
   }, [])
 
   async function getUserLikes() {
-    const res = await fetch(`${clientPath}/api/likes/${session.id}`);
+    const res = await fetch(`${clientPath}/api/likesReply/${session.id}`);
     const userLikes = await res.json();
 
-    if(userLikes.includes(props.id)) {
+    if(!userLikes.message && userLikes.includes(props.id)) {
       setLiked(true);
     }
   }
@@ -55,15 +54,9 @@ export default function Reply(props) {
     return Math.floor(finalValue) + unitOfTime;
   }
 
-  function displayDate() {
-    let date = new Date(props.date);
-
-    return date.toLocaleTimeString() + " · " + date.toLocaleDateString()
-  }
-
   async function handleLike() {
     if(liked === false) {
-      await fetch(`${clientPath}/api/likes/${props.id}`, {
+      await fetch(`${clientPath}/api/likesReply/${props.id}`, {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
@@ -72,7 +65,7 @@ export default function Reply(props) {
         return prev + 1;
       })
     } else {
-      await fetch(`${clientPath}/api/likes/${props.id}`, {
+      await fetch(`${clientPath}/api/likesReply/${props.id}`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: session.id})
@@ -85,18 +78,6 @@ export default function Reply(props) {
       return !prev;
     });
     
-  }
-
-  function handleClick(event) {
-    if(!event.target.outerHTML.startsWith("<a") && !event.target.outerHTML.startsWith("<h3") && !event.target.outerHTML.startsWith("<svg") && !event.target.outerHTML.startsWith("<path")) {
-      router.push(`/post/${props.id}`);
-    }
-  }
-
-  function handleComment() {
-    setShowReplyForm(prev => {
-      return !prev;
-    })
   }
 
   function handleFocus(event) {
@@ -117,7 +98,7 @@ export default function Reply(props) {
 
   return ( 
     <>
-    <div className={!router.asPath.startsWith("/post") ? `${styles.container} ${styles.hover}` : `${styles.container}`} onClick={!router.asPath.startsWith("/post") ? handleClick : undefined}>
+    <div className={`${styles.container}`}>
       <div className={styles.user}>
         <Link href="/profile/[id]" as={`/profile/${props.user}`}><h3>{props.name}</h3></Link>
         <div className={styles.time}>{getTime()}</div>

@@ -24,7 +24,6 @@ export default function index({post}) {
 export const getServerSideProps = async (context) => {
   const res = await fetch(`${server}/api/post/${context.params.id}`);
   const post = await res.json();
-  console.log(post);
 
   return {
     props: {
