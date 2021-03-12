@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/dbConnect'
 import Post from '../../../models/Post'
+import Reply from '../../../models/Reply'
 import User from '../../../models/User'
 
 export default async function handler(req, res) {
@@ -8,7 +9,7 @@ export default async function handler(req, res) {
   const {query: {id}, method} = req;
 
   if(method === 'GET') {
-    Post.findById(id).populate('user').exec((err, post) => {
+    Post.findById(id).populate('user').populate({path: 'replies', populate: 'user'}).exec((err, post) => {
       if(!err) {
         res.status(200).json(post);
       } else {

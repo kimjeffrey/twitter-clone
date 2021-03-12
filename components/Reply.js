@@ -1,7 +1,13 @@
 import {useEffect, useState} from 'react'
+import {useRouter} from 'next/router';
+import {useSession} from 'next-auth/client'
+import {dev} from '../config'
 import styles from '../styles/Reply.module.scss'
 
 export default function Reply(props) {
+  const clientPath = dev ? 'http://localhost:3000' : `https://twitter-clone-site.vercel.app`;
+  const router = useRouter();
+  const [session] = useSession(); 
 
   const [content, setContent] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -14,9 +20,15 @@ export default function Reply(props) {
     setContent(event.target.value);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Submitted")
+    await fetch(`${clientPath}/api/reply`, {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({content, user: session.id, post: props.id})
+    });
+    setContent("");
+    router.replace(router.asPath);
   }
 
   function handleDisable() {

@@ -58,6 +58,15 @@
       gap : 5px;
       align-items: center;
     }
+    .commentContainer {
+      display: flex;
+      gap : 5px;
+      align-items: center;
+      .commentCount {
+        color: grey;
+        font-size: .8em;
+      }
+    }
     .icon {
       cursor: pointer;
     }

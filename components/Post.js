@@ -17,6 +17,7 @@ export default function Post(props) {
 
   const [liked, setLiked] = useState(false);
   const [numberOfLikes, setNumberOfLikes] = useState(props.likes);
+  const [numberOfReplies, setNumberOfReplies] = useState(props.replies);
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   useEffect(async () => {
@@ -132,9 +133,14 @@ export default function Post(props) {
         <hr/>
       </>}
       <div className={styles.icons}>
-        <a className={`${styles.icon} ${styles.comment}`} href="#" onClick={handleComment}>
-          <FontAwesomeIcon icon={farComment} />
-        </a>
+        <div className={styles.commentContainer}>
+          <a className={`${styles.icon} ${styles.comment}`} href="#" onClick={handleComment}>
+            <FontAwesomeIcon icon={farComment} />
+          </a>
+          <div className={styles.commentCount}>
+            {numberOfReplies > 0 && !router.asPath.startsWith("/post") && numberOfReplies}
+          </div>
+        </div>
         <div className={styles.likeContainer}>
           <a className={!liked ? `${styles.icon} ${styles.heart}` : `${styles.icon} ${styles.heartFilled}`} href="#" onClick={handleLike}>
             {!liked && <FontAwesomeIcon icon={farHeart} /> }
