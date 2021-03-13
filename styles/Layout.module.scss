@@ -6,47 +6,59 @@
   display: flex;
   justify-content: center;
   gap: 30px;
+  @media only screen and (max-width: $md) {
+    width: 100%;
+    gap: 0;
+    padding-left: 5px;
+    padding-right: 1px;
+  }
+  .content {
+    @media only screen and (max-width: $md) {
+      width: 80vw;
+    }
+    .titleContainer {
+      border: $border;
+      width: 534px;
+      padding: 10px;
+      @media only screen and (max-width: $md) {
+        width: 100%;
+      }
+      h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .profileInfo {
+        font-size: .9rem;
+        color: grey;
+        .icon {
+          margin-left: 5px;
+          margin-right: 5px;
+        }
+      }
+    }
+    .message {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 10px;
+      button {
+        padding: 10px;
+        border-radius: 35px;
+        border: 2px solid $color-secondary;
+        color: $color-secondary;
+        background: white;
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+        &:hover {
+          background: $color-secondary;
+          color: white;
+        }
+      }
+    }
+  }  
 }
 
-.content {
-  .titleContainer {
-    border: $border;
-    width: 534px;
-    padding: 10px;
-    h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    .profileInfo {
-      font-size: .9rem;
-      color: grey;
-      .icon {
-        margin-left: 5px;
-        margin-right: 5px;
-      }
-    }
-  }
-  .message {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 10px;
-    button {
-      padding: 10px;
-      border-radius: 35px;
-      border: 2px solid $color-secondary;
-      color: $color-secondary;
-      background: white;
-      font-weight: bold;
-      font-size: 24px;
-      cursor: pointer;
-      &:hover {
-        background: $color-secondary;
-        color: white;
-      }
-    }
-  }
-}

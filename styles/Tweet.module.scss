@@ -8,6 +8,9 @@
     outline: none;
     padding: 10px;
     resize: none;
+    @media only screen and (max-width: $md) {
+      width: 100%;
+    }
   }
   .buttonHolder {
     display: flex;

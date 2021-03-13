@@ -2,7 +2,7 @@ import Link from 'next/link'
 import {useEffect, useState} from 'react'
 import {signIn, signOut, useSession} from 'next-auth/client'
 import {useRouter} from 'next/router';
-import {faDove, faHome, faUser} from '@fortawesome/free-solid-svg-icons'
+import {faDove, faHome, faUser, faSignInAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import styles from '../styles/LeftSideBar.module.scss'
 
@@ -52,19 +52,29 @@ export default function LeftSideBar({href}) {
         <Link href="/">
           <a className={router.pathname === "/" ? styles.selected : undefined}>
             <FontAwesomeIcon icon={faHome} />
-            <div>Home</div>
+            <div className={styles.label}>Home</div>
           </a>
         </Link>
       </li>
       <li className={styles.navItem}>
         <a href="#" className={profileBool ? styles.selected : undefined} onClick={handleProfileClick}>
           <FontAwesomeIcon icon={faUser} />
-          <div>Profile</div>
+          <div className={styles.label}>Profile</div>
         </a>
       </li>
       <li className={styles.navItem}>
-        {session && <a href="#" onClick={handleSignout} className="btn-signin">Sign out</a>  } 
-        {!session && <a href="#" onClick={handleSignin}  className="btn-signin">Sign in</a>  } 
+        {session && 
+          <a href="#" onClick={handleSignout} className="btn-signin">
+            <FontAwesomeIcon icon={faSignInAlt} />
+            <div className={styles.label}>Sign out</div>
+          </a>  
+        } 
+        {!session && 
+          <a href="#" onClick={handleSignin}  className="btn-signin">
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            <div className={styles.label}>Sign in</div>
+          </a>  
+        } 
       </li>
     </ul>
   )
