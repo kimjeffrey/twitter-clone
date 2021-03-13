@@ -50,14 +50,14 @@ export default function LeftSideBar({href}) {
       </li>
       <li className={styles.navItem}>
         <Link href="/">
-          <a className={router.pathname === "/" && styles.selected}>
+          <a className={router.pathname === "/" ? styles.selected : undefined}>
             <FontAwesomeIcon icon={faHome} />
             <div>Home</div>
           </a>
         </Link>
       </li>
       <li className={styles.navItem}>
-        <a href="#" className={profileBool && styles.selected} onClick={handleProfileClick}>
+        <a href="#" className={profileBool ? styles.selected : undefined} onClick={handleProfileClick}>
           <FontAwesomeIcon icon={faUser} />
           <div>Profile</div>
         </a>
