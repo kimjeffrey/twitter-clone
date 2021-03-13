@@ -65,13 +65,13 @@ export default function LeftSideBar({href}) {
       <li className={styles.navItem}>
         {session && 
           <a href="#" onClick={handleSignout} className="btn-signin">
-            <FontAwesomeIcon icon={faSignInAlt} />
+            <FontAwesomeIcon icon={faSignOutAlt} />
             <div className={styles.label}>Sign out</div>
           </a>  
         } 
         {!session && 
           <a href="#" onClick={handleSignin}  className="btn-signin">
-            <FontAwesomeIcon icon={faSignOutAlt} />
+            <FontAwesomeIcon icon={faSignInAlt} />
             <div className={styles.label}>Sign in</div>
           </a>  
         } 
