@@ -1,3 +1,29 @@
+# [Twitter Clone](https://twitter-clone-site.vercel.app/)
+
+This website is a Twitter Clone, made using Next.js and MongoDB.
+
+![twitter clone image](images/Twitter-clone.png)
+
+## Features
+- Signup/Login/Authentication
+- Create/Delete Tweets
+- Reply to tweets
+- Like tweets
+- View users' profile pages
+- View individual posts + replies
+
+## To add
+- View user's replies and likes on profile page
+- Add user profile images
+
+## Technologies Used
+- Next.js
+- NextAuth.js
+- MongoDB/Mongoose 
+- SCSS
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
