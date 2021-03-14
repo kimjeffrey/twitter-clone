@@ -2,7 +2,7 @@
 
 This website is a Twitter Clone, made using Next.js and MongoDB.
 
-![twitter clone image](images/Twitter-clone.png)
+![twitter clone image](images/Twitter-Clone.png)
 
 ## Features
 - Signup/Login/Authentication
