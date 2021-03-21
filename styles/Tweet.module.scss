@@ -15,6 +15,13 @@
   .buttonHolder {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    .charCount {
+      color: grey;
+      &.error {
+        color: red;
+      }
+    }
     .button {
       padding: 12px;
       margin: 10px;
@@ -25,7 +32,7 @@
       font-weight: bold;
       cursor: pointer;
       &:disabled {
-        cursor: not-allowed;
+        opacity: .5;
       }
     }
   }

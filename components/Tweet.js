@@ -22,6 +22,9 @@ export default function Tweet() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if(content.length > 280) {
+      return;
+    }
     await fetch(`${clientPath}/api/post`, {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
@@ -32,7 +35,7 @@ export default function Tweet() {
   }
 
   function handleDisable() {
-    if(content.length > 0) {
+    if(content.length > 0 && content.length <= 280) {
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -43,6 +46,9 @@ export default function Tweet() {
     <form onSubmit={handleSubmit} className={styles.form}>
       <textarea name="content" className={styles.textarea} value={content} onChange={handleChange} placeholder="What's happening?" id="" cols="45" rows="2"></textarea><br/>
       <div className={styles.buttonHolder}>
+        <div className={content.length > 280 ? `${styles.charCount} ${styles.error}` : styles.charCount}>
+          {content.length > 0 && `${content.length} / 280`}
+        </div>
         <button type="submit" disabled={disabled} className={styles.button}>Tweet</button>
       </div>
     </form>
